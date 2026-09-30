@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Allen Devaraj</title>
+<meta name="description" content="Allen Devaraj Augustin Ponraj. Humanoid whole-body control, robotic manipulation, and aerospace systems. Correll Lab, CU Boulder.">
+<meta property="og:title" content="Allen Devaraj">
+<meta property="og:description" content="Sampling-based whole-body MPC for supported reaching on a real Unitree H1-2, robotic EV battery disassembly, CubeSat ADCS. CU Boulder, Correll Lab.">
+<meta property="og:image" content="img/lean-reach-still.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF; --bg-2:#F5F5F3; --ink:#1A1A1A; --mid:#666B72; --line:#E3E3E0;
+    --accent:#B5482E;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#121416;--bg-2:#1B1E22;--ink:#ECEAE5;--mid:#9AA1AB;--line:#2A2F36;--accent:#E0714F}
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6}
+  img{max-width:100%;display:block;border-radius:4px}
+  a{color:var(--ink);text-decoration-color:var(--line);text-underline-offset:3px}
+  a:hover{text-decoration-color:var(--accent)}
+  a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+
+  /* header + tabs */
+  header{border-bottom:1px solid var(--line)}
+  .top{display:flex;justify-content:space-between;align-items:baseline;padding:28px 0 14px;gap:16px;flex-wrap:wrap}
+  .brand{font-weight:700;font-size:20px;text-decoration:none;letter-spacing:-.01em}
+  .brand small{display:block;font-weight:400;font-size:13.5px;color:var(--mid);margin-top:2px}
+  .social{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px}
+  .social a{color:var(--mid);text-decoration:none}
+  .social a:hover{color:var(--ink)}
+  .tabs{display:flex;gap:4px;margin:0;padding:0;list-style:none;overflow-x:auto}
+  .tabs a{display:block;padding:10px 14px;margin-bottom:-1px;font-size:15px;font-weight:500;color:var(--mid);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap}
+  .tabs a:hover{color:var(--ink)}
+  .tabs a.active{color:var(--ink);border-bottom-color:var(--accent)}
+  @media (max-width:640px){.tabs a{padding:10px 10px;font-size:14px}}
+
+  /* panels */
+  .panel{display:none;padding:40px 0 64px}
+  .panel.active{display:block}
+  h1{font-weight:700;font-size:clamp(28px,4vw,38px);line-height:1.15;margin:0 0 14px;letter-spacing:-.02em}
+  h2{font-weight:700;font-size:24px;margin:0 0 20px;letter-spacing:-.01em}
+  h3{font-weight:600;font-size:19px;margin:0 0 4px;line-height:1.3}
+  .lede{color:var(--mid);margin:0 0 28px;max-width:62ch;font-size:16.5px}
+  .meta{font-size:13.5px;color:var(--mid);margin:0 0 10px}
+  .meta span+span::before{content:"·";margin:0 8px}
+
+  /* home */
+  .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
+  @media (max-width:760px){.hero{grid-template-columns:1fr}}
+  .hero p{margin:0 0 14px;font-size:16.5px}
+  .pfp img{width:100%;max-width:360px;aspect-ratio:3/4;object-fit:cover;border-radius:8px;margin-left:auto}
+  @media (max-width:760px){.pfp img{max-width:280px;margin:0}}
+  .news{margin-top:40px;border-top:1px solid var(--line);padding-top:20px}
+  .news h2{font-size:18px;margin-bottom:10px}
+  .news ul{margin:0;padding:0;list-style:none}
+  .news li{padding:6px 0;font-size:15px;display:grid;grid-template-columns:90px 1fr;gap:12px}
+  .news li b{font-weight:500;color:var(--mid)}
+  @media (max-width:480px){.news li{grid-template-columns:1fr;gap:0}}
+
+  /* entries (research + projects) */
+  .entry{display:grid;grid-template-columns:280px 1fr;gap:28px;padding:28px 0;border-top:1px solid var(--line)}
+  .entry:first-of-type{border-top:none;padding-top:0}
+  @media (max-width:640px){.entry{grid-template-columns:1fr;gap:14px}}
+  .entry .thumb img,.entry .thumb video{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:6px;background:var(--bg-2)}
+  .entry p{margin:0 0 10px;font-size:15.5px}
+  .entry ul{margin:0 0 10px;padding-left:18px;font-size:15px}
+  .entry li{margin-bottom:4px}
+  .tag{display:inline-block;font-size:11.5px;padding:2px 9px;border:1px solid var(--line);border-radius:100px;color:var(--mid);margin:0 4px 6px 0}
+  .links{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;margin-top:4px}
+
+  /* publications */
+  .pub{padding:18px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:160px 1fr;gap:22px}
+  .pub:first-of-type{border-top:none;padding-top:0}
+  @media (max-width:640px){.pub{grid-template-columns:1fr;gap:10px}}
+  .pub img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:top;border-radius:6px}
+  .pub .title{font-weight:600;margin:0 0 3px}
+  .pub .authors{font-size:14.5px;color:var(--mid);margin:0 0 3px}
+  .pub .authors b{color:var(--ink);font-weight:600}
+  .pub .venue{font-size:14px;margin:0 0 4px}
+  .note{font-size:13.5px;color:var(--mid)}
+
+  /* about */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+  @media (max-width:720px){.cols{grid-template-columns:1fr}}
+  .row{padding:12px 0;border-top:1px solid var(--line)}
+  .row:first-of-type{border-top:none;padding-top:0}
+  .row .t{font-weight:600;margin:0}
+  .row .s{color:var(--mid);font-size:14px;margin:0}
+  .row p{margin:4px 0 0;font-size:14.5px}
+  .skills{display:flex;flex-wrap:wrap;gap:6px}
+  h3.sub{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--mid);margin:0 0 10px}
+  h3.sub:not(:first-child){margin-top:32px}
+  .list{margin:0;padding:0;list-style:none}
+  .list li{padding:8px 0;border-top:1px solid var(--line);font-size:14.5px;display:grid;grid-template-columns:52px 1fr;gap:12px}
+  .list li:first-child{border-top:none;padding-top:0}
+  .list li b{font-weight:500;color:var(--mid)}
+  .about-p{margin:0;font-size:14.5px}
+
+  footer{padding:24px 0 40px;border-top:1px solid var(--line);color:var(--mid);font-size:13.5px}
+  footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <div class="top">
+    <a class="brand" href="#home">Allen Devaraj<small>Humanoid whole-body control · Correll Lab, CU Boulder</small></a>
+    <div class="social">
+      <a href="https://github.com/AllenDevaraj" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://scholar.google.com/citations?user=Rk1beY4AAAAJ&hl=en" target="_blank" rel="noopener">Scholar</a>
+      <a href="https://linkedin.com/in/allen-devaraj-325320219" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="Allen_Devaraj_CV.pdf" target="_blank" rel="noopener">CV</a>
+    </div>
+  </div>
+  <ul class="tabs" role="tablist">
+    <li><a href="#home" data-tab="home">Home</a></li>
+    <li><a href="#research" data-tab="research">Research</a></li>
+    <li><a href="#publications" data-tab="publications">Publications</a></li>
+    <li><a href="#projects" data-tab="projects">Projects</a></li>
+    <li><a href="#about" data-tab="about">About</a></li>
+  </ul>
+</div></header>
+
+<main class="wrap">
+
+<!-- HOME -->
+<section class="panel" id="home">
+  <div class="hero">
+    <div>
+      <h1>Whole-body control on real humanoids.</h1>
+      <p>I am a graduate research assistant in the Correll Lab at CU Boulder, working on contact-rich whole-body control for humanoid robots. My current work runs sampling-based whole-body MPC on a Unitree H1-2 with only local sensing and fiducial markers, no motion capture, and has the robot brace against a table to reach objects far outside its standing workspace.</p>
+      <p>Before humanoids I worked on constrained motion planning for robotic EV battery disassembly, CubeSat attitude control, and a string of things that fly: a ground-effect aircraft, autonomous quadcopters, a CanSat, and a sounding rocket.</p>
+      <p>M.S. Aerospace Engineering Sciences, CU Boulder, 2027. B.E. Aeronautical Engineering, MIT Anna University, 2025.</p>
+    </div>
+    <div class="pfp">
+      <img src="img/pfp.jpg" alt="Allen Devaraj sitting on a log in front of autumn aspens">
+    </div>
+  </div>
+
+  <div class="news">
+    <h2>Recent</h2>
+    <ul>
+      <li><b>Sep 2026</b><span>Poster and lightning talk at the IROS 2026 Workshop on Athletic Humanoid Robotics, Pittsburgh.</span></li>
+      <li><b>Aug 2026</b><span>GOLEM preprint on arXiv: modular humanoid autonomy for EV battery disassembly.</span></li>
+      <li><b>2026</b><span>RAPID accepted at IEEE CASE 2026.</span></li>
+      <li><b>Apr 2026</b><span>Presented the EV disassembly project at the ARPA-E Energy Innovation Summit, San Diego.</span></li>
+      <li><b>Jan 2026</b><span>Joined the Correll Lab as a graduate research assistant.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section class="panel" id="research">
+  <h2>Research</h2>
+
+  <article class="entry">
+    <div class="thumb">
+      <video autoplay muted loop playsinline preload="auto" poster="img/lean-reach-still.jpg">
+        <source src="video/lean_reach.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div>
+      <span class="tag">Humanoids</span><span class="tag">Sampling-based MPC</span><span class="tag">Multi-contact</span><span class="tag">Real hardware</span>
+      <h3>Supported reaching with whole-body MPC on the Unitree H1-2</h3>
+      <p class="meta"><span>Correll Lab, CU Boulder</span><span>Jan 2026 – present</span></p>
+      <p>A sampling-based whole-body MPC framework, built on MuJoCo MPC, for leaning, bracing, reaching, and recovery on a real Unitree H1-2. The robot braces one forearm on a table to extend its reachable workspace by about 50 cm beyond unbraced standing, holds the loaded posture for over four minutes, and returns to standing. The controller replans at 34 Hz on a laptop and transfers sim-to-real.</p>
+      <ul>
+        <li>Local sensing only: a proprioceptive estimator fused with AprilTag fiducials from the head camera, no motion capture</li>
+        <li>Reaches the commanded target in 89% of trials and completes the full reach-and-recovery cycle in 81%, over 54 hardware trials spanning six targets and three table heights, with end-effector accuracy of 2.7 ± 0.9 cm</li>
+        <li>Planner study: temporal persistence of sampled actions and exploration scale govern success at small sampling budgets, and CEM gives the widest operating region over planning rate and model mismatch</li>
+      </ul>
+      <div class="links">
+        <a href="https://h12leaner.github.io" target="_blank" rel="noopener">Project page and video</a>
+        <a href="pdf/IROS2026_workshop_poster.pdf" target="_blank" rel="noopener">Poster (PDF)</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="thumb"><img src="img/ev-gantry.jpg" alt="UR manipulator on a gantry above an open EV battery pack"></div>
+    <div>
+      <span class="tag">Manipulation</span><span class="tag">Motion planning</span><span class="tag">VLM</span><span class="tag">ARPA-E</span>
+      <h3>Robotic disassembly of EV battery packs</h3>
+      <p class="meta"><span>Correll Lab, CU Boulder</span><span>Jan 2026 – present</span></p>
+      <p>A constrained motion planning pipeline for a 7-DOF industrial manipulator on a gantry: analytical IK seed ranking and cost-normalised configuration selection to reach every screw on a full-size pack. A vision-language model reasons over the pointcloud about which screws remain, closing the loop between perception and the planner.</p>
+      <ul>
+        <li>Co-author on <a href="https://arxiv.org/abs/2603.18520" target="_blank" rel="noopener">RAPID</a>, IEEE CASE 2026, and on the <a href="https://arxiv.org/abs/2608.21550" target="_blank" rel="noopener">GOLEM</a> humanoid autonomy stack</li>
+        <li>Presented the project to industry and government stakeholders at the ARPA-E Energy Innovation Summit, April 2026</li>
+      </ul>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="thumb"><img src="img/swarmex-flatsat.jpg" alt="SWARM-EX FlatSat bench with laptops and test harness"></div>
+    <div>
+      <span class="tag">Spacecraft ADCS</span><span class="tag">Flight software</span>
+      <h3>SWARM-EX CubeSat: ADCS ground-station integration</h3>
+      <p class="meta"><span>Colorado Center for Astrodynamics Research</span><span>Sept 2025 – present</span></p>
+      <p>ADCS engineer on the NSF-funded SWARM-EX mission. Building the interpreter between the Blue Canyon XACT-15 attitude unit and the command-and-data-handling subsystem over a Hydra-based communication architecture, and testing it on the FlatSat.</p>
+    </div>
+  </article>
+</section>
+
+<!-- PUBLICATIONS -->
+<section class="panel" id="publications">
+  <h2>Publications</h2>
+
+  <div class="pub">
+    <img src="img/poster-thumb.jpg" alt="IROS 2026 workshop poster">
+    <div>
+      <p class="title">Leaning Over to Reach Far-Away Objects</p>
+      <p class="authors"><b>A. Devaraj</b>*, W. Xie*, N. Correll</p>
+      <p class="venue">IROS 2026 Workshop on Perception and Decision Making for Athletic Humanoid Robotics, Pittsburgh. Poster and lightning talk.</p>
+      <div class="links"><a href="pdf/IROS2026_workshop_poster.pdf" target="_blank" rel="noopener">Poster</a><a href="https://h12leaner.github.io" target="_blank" rel="noopener">Project page</a></div>
+    </div>
+  </div>
+
+  <div class="pub">
+    <img src="img/ev-gantry.jpg" alt="Gantry manipulator over a battery pack">
+    <div>
+      <p class="title">RAPID: Robotic Agentic Platform for Intelligent Electric Vehicle Disassembly</p>
+      <p class="authors">Z. Allen*, M. Conway*, L. Antieau, <b>A. Ponraj</b>, N. Correll</p>
+      <p class="venue">IEEE International Conference on Automation Science and Engineering (CASE), 2026.</p>
+      <div class="links"><a href="https://arxiv.org/abs/2603.18520" target="_blank" rel="noopener">arXiv</a></div>
+    </div>
+  </div>
+
+  <div class="pub">
+    <img src="img/h1-locomanip.jpg" alt="H1-2 at the battery workbench next to a UR arm">
+    <div>
+      <p class="title">GOLEM: Modular Humanoid Autonomy Towards Electric Vehicle Battery Disassembly</p>
+      <p class="authors">M. Conway*, W. Xie, <b>A. Devaraj</b>, Y. Zhang, N. Pudasaini, M. Feit, A. Abid, Z. Allen, C. Liu, X. Tan, J. Lavering, J. Chen, L. Antieau, A. Von Pischke, A. Roncone, Z. Sunberg, N. Correll</p>
+      <p class="venue">arXiv preprint, 2026.</p>
+      <div class="links"><a href="https://arxiv.org/abs/2608.21550" target="_blank" rel="noopener">arXiv</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="panel" id="projects">
+  <h2>Projects</h2>
+
+  <article class="entry">
+    <div class="thumb"><img src="img/tamp-sim.jpg" alt="Two Franka arms performing peg insertion in simulation"></div>
+    <div>
+      <h3>Dual-arm insertion via task and motion planning</h3>
+      <p class="meta"><span>CU Boulder</span><span>Aug – Dec 2025</span></p>
+      <p>Coordinated peg-in-hole insertion with two simulated Franka manipulators through TAMP: symbolic task planner, geometric reasoner, MoveIt/OMPL motion planner, with a GUI for dual-arm control and failure reporting.</p>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="thumb"><img src="img/floatsat-setup.jpg" alt="FloatSat on an air bearing next to an air compressor"></div>
+    <div>
+      <h3>Reaction-wheel attitude control on a FloatSat</h3>
+      <p class="meta"><span>SSPACE Lab, IIST Trivandrum</span><span>Summer 2024</span></p>
+      <p>Designed and implemented a one-DOF control algorithm for a single reaction wheel on an air-bearing FloatSat used to test CubeSat ADCS. Achieved wireless Z-axis stabilisation and pointing.</p>
+      <div class="links"><a href="https://www.youtube.com/watch?v=hyB0E1XFrNg" target="_blank" rel="noopener">Video</a></div>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="thumb"><img src="img/wig-test.jpg" alt="Wing-in-ground-effect aircraft flying low over a field"></div>
+    <div>
+      <h3>Stabilisation of a ground-effect aircraft</h3>
+      <p class="meta"><span>Senior project, MIT Anna University</span><span>2024 – 25</span><span>Giri Brothers Award, best senior project</span></p>
+      <p>CFD-driven genetic optimisation of the horizontal stabiliser (+9.5% lift-curve slope) and a feedback pitch damper designed from an identified transfer function. Built and flight-tested the RC aircraft.</p>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="thumb"><img src="img/drone-real.jpg" alt="Custom quadcopter with red propellers"></div>
+    <div>
+      <h3>Autonomous payload-drop quadcopter</h3>
+      <p class="meta"><span>AeroTHON 2024, SAEINDIA</span><span>Team lead</span><span>11th nationally</span></p>
+      <p>Led systems integration and flight software. Trained a YOLOv8 model for live onboard object classification on a Raspberry Pi and implemented boustrophedon coverage planning in ROS on Pixhawk hardware.</p>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="thumb"><img src="img/cansat-descent.jpg" alt="Renders of the CanSat deploying its heat shield and parachute"></div>
+    <div>
+      <h3>CanSat with heat-shield and parachute deployment</h3>
+      <p class="meta"><span>CanSat 2024, AAS</span><span>Team lead</span><span>12th internationally, design phase</span></p>
+      <p>A can-sized satellite that ejects a heat shield to slow descent and then deploys a parachute to land an egg from 725 m. Ran CAD, flight software, and the MATLAB ground station.</p>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="thumb"><img src="img/rocket-stand.jpg" alt="Sounding rocket on a launch stand"></div>
+    <div>
+      <h3>Sounding rocket with custom avionics</h3>
+      <p class="meta"><span>MIT Anna University</span><span>Aug – Nov 2023</span><span>Team lead</span></p>
+      <p>Led a four-person team designing and pre-flight testing a sounding rocket with a custom avionics bay. Designed the parachute ejection mechanism and PCB, and wrote a MATLAB app to reconstruct the 3D trajectory from IMU telemetry.</p>
+    </div>
+  </article>
+</section>
+
+<!-- ABOUT -->
+<section class="panel" id="about">
+  <h2>About</h2>
+  <div class="cols">
+    <div>
+      <h3 class="sub">Education</h3>
+      <div class="row"><p class="t">University of Colorado Boulder</p><p class="s">M.S. Aerospace Engineering Sciences · Aug 2025 – May 2027 · GPA 3.81</p><p>Linear control systems, algorithmic motion planning, statistical estimation, deep reinforcement learning.</p></div>
+      <div class="row"><p class="t">Madras Institute of Technology (MIT), Anna University, Chennai, India</p><p class="s">B.E. Aeronautical Engineering · 2021 – 2025 · GPA 3.51</p><p>Rocket propulsion, aircraft structures, avionics. Amita Award for highest score in Python programming, 2022.</p></div>
+
+      <h3 class="sub">Talks and workshops</h3>
+      <ul class="list">
+        <li><b>2026</b><span>IROS Workshop on Athletic Humanoid Robotics, Pittsburgh. Poster and lightning talk.</span></li>
+        <li><b>2026</b><span>ARPA-E Energy Innovation Summit, San Diego. Live demo and talk on robotic EV battery disassembly.</span></li>
+        <li><b>2024</b><span>IIT Kanpur Flight Training Laboratory workshop.</span></li>
+        <li><b>2023</b><span>Warsaw University of Technology, aeronautics with robotics workshop.</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="sub">Interests</h3>
+      <p class="about-p">Humanoid whole-body control, and the seam between model-based control and learning: residual and model-based RL on top of an MPC base. My background is aerospace, and I keep a foot in it through spacecraft attitude control and flight software.</p>
+
+      <h3 class="sub">Skills</h3>
+      <div class="skills">
+        <span class="tag">Python</span><span class="tag">C++</span><span class="tag">ROS 2</span><span class="tag">MuJoCo</span><span class="tag">MuJoCo MPC</span><span class="tag">Isaac Lab</span><span class="tag">Gazebo</span><span class="tag">PyTorch</span><span class="tag">MATLAB</span><span class="tag">Pixhawk</span><span class="tag">Raspberry Pi</span><span class="tag">Fusion 360</span><span class="tag">SolidWorks</span><span class="tag">CATIA</span><span class="tag">PCB design</span><span class="tag">3D printing</span>
+      </div>
+
+      <h3 class="sub">Contact</h3>
+      <p class="about-p"><a href="mailto:allendevaraj33333@gmail.com">allendevaraj33333@gmail.com</a><br><a href="mailto:alau2568@colorado.edu">alau2568@colorado.edu</a><br><a href="tel:+17206911200">+1 720 691 1200</a><br>Boulder, Colorado</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 Allen Devaraj Augustin Ponraj</span>
+  <span>Static page. No tracking.</span>
+</div></footer>
+
+<script>
+(function(){
+  var tabs=document.querySelectorAll('.tabs a'),panels=document.querySelectorAll('.panel');
+  function show(id){
+    if(!document.getElementById(id))id='home';
+    panels.forEach(function(p){p.classList.toggle('active',p.id===id)});
+    tabs.forEach(function(t){t.classList.toggle('active',t.dataset.tab===id)});
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',function(){show(location.hash.slice(1)||'home')});
+  show(location.hash.slice(1)||'home');
+})();
+</script>
+<noscript><style>.panel{display:block}</style></noscript>
+</body>
+</html>
