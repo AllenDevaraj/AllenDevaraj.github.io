@@ -4,7 +4,7 @@ Personal site. One static page (`index.html`), tabs switched by a few lines of J
 
 ```
 index.html                 the page
-Allen_Devaraj_CV.pdf       CV linked from the header
+CV                         header link goes to Google Drive (no local copy)
 pdf/                       IROS 2026 workshop poster
 video/lean_reach.mp4       H1-2 braced-reach clip on the home tab
 img/                       photos and thumbnails
