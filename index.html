@@ -170,7 +170,7 @@
       </video>
     </div>
     <div>
-      <span class="tag">Humanoids</span><span class="tag">Sampling-based MPC</span><span class="tag">Multi-contact</span><span class="tag">Real hardware</span>
+      <span class="tag">Humanoids</span><span class="tag">Sampling-based MPC</span><span class="tag">Multi-contact</span><span class="tag">Real hardware</span><span class="tag">Digital twin</span><span class="tag">LLM agent tooling</span>
       <h3>Supported reaching with whole-body MPC on the Unitree H1-2</h3>
       <p class="meta"><span>Correll Lab, CU Boulder</span><span>Jan 2026 – present</span></p>
       <p>A sampling-based whole-body MPC framework, built on MuJoCo MPC, for leaning, bracing, reaching, and recovery on a real Unitree H1-2. The robot braces one forearm on a table to extend its reachable workspace by about 50 cm beyond unbraced standing, holds the loaded posture for over four minutes, and returns to standing. The controller replans at 34 Hz on a laptop and transfers sim-to-real.</p>
@@ -178,6 +178,7 @@
         <li>Local sensing only: a proprioceptive estimator fused with AprilTag fiducials from the head camera, no motion capture</li>
         <li>Reaches the commanded target in 89% of trials and completes the full reach-and-recovery cycle in 81%, over 54 hardware trials spanning six targets and three table heights, with end-effector accuracy of 2.7 ± 0.9 cm</li>
         <li>Planner study: temporal persistence of sampled actions and exploration scale govern success at small sampling budgets, and CEM gives the widest operating region over planning rate and model mismatch</li>
+        <li>Digital twin tooling: an LLM agent skill (Claude Code) that replays run logs into a timed event map of contacts, saturation and fall onset, audits planner-versus-twin model parity, and autotunes MPC cost weights scored on the twin</li>
       </ul>
       <div class="links">
         <a href="https://h12leaner.github.io" target="_blank" rel="noopener">Project page and video</a>
@@ -189,10 +190,10 @@
   <article class="entry">
     <div class="thumb"><img src="img/ev-gantry.jpg" alt="UR manipulator on a gantry above an open EV battery pack"></div>
     <div>
-      <span class="tag">Manipulation</span><span class="tag">Motion planning</span><span class="tag">VLM</span><span class="tag">ARPA-E</span>
+      <span class="tag">Manipulation</span><span class="tag">Motion planning</span><span class="tag">LLM agents</span><span class="tag">VLM</span><span class="tag">ARPA-E</span>
       <h3>Robotic disassembly of EV battery packs</h3>
       <p class="meta"><span>Correll Lab, CU Boulder</span><span>Jan 2026 – present</span></p>
-      <p>A constrained motion planning pipeline for a 7-DOF industrial manipulator on a gantry: analytical IK seed ranking and cost-normalised configuration selection to reach every screw on a full-size pack. A vision-language model reasons over the pointcloud about which screws remain, closing the loop between perception and the planner.</p>
+      <p>A constrained motion planning pipeline for a 7-DOF industrial manipulator on a gantry: analytical IK seed ranking and cost-normalised configuration selection to reach every screw on a full-size pack. The planner is the manipulation layer of RAPID, where LLM agents (SmolAgents) sequence the disassembly by calling ROS tools, and a vision-language model reasons over the pointcloud about which screws remain.</p>
       <ul>
         <li>Co-author on <a href="https://arxiv.org/abs/2603.18520" target="_blank" rel="noopener">RAPID</a>, IEEE CASE 2026, and on the <a href="https://arxiv.org/abs/2608.21550" target="_blank" rel="noopener">GOLEM</a> humanoid autonomy stack</li>
         <li>Presented the project to industry and government stakeholders at the ARPA-E Energy Innovation Summit, April 2026</li>
